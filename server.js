@@ -1,6 +1,6 @@
 const express = require('express');
 const rosnodejs = require('rosnodejs');
-const bodyparser = require('body-parser');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 8080;
 
