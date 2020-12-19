@@ -1,0 +1,23 @@
+{
+  "name": "drone-control-web-server",
+  "version": "1.0.0",
+  "description": "A web server that opens up a portal to control the drone in many different ways.",
+  "main": "server.js",
+  "dependencies": {
+    "express": "4.17.1",
+    "rosnodejs": "3.0.2"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KDharmarajanDev/drone-control-web-server.git"
+  },
+  "author": "Karthik Dharmarajan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KDharmarajanDev/drone-control-web-server/issues"
+  },
+  "homepage": "https://github.com/KDharmarajanDev/drone-control-web-server#readme"
+}
