@@ -5,7 +5,8 @@
   "main": "server.js",
   "dependencies": {
     "express": "4.17.1",
-    "rosnodejs": "3.0.2"
+    "rosnodejs": "3.0.2",
+    "body-parser": "1.19.0"
   },
   "scripts": {
     "start": "node server.js"
