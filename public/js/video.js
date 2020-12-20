@@ -1,4 +1,4 @@
-const socket = io.connect('http://localhost:8080');
+const socket = io();
 socket.on('image', (data) => {
     console.log('data', data);
     const image = document.getElementById('image');

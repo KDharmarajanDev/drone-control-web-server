@@ -2,9 +2,9 @@ const express = require('express');
 // const rosnodejs = require('rosnodejs');
 const bodyParser = require('body-parser');
 const app = express();
-const { spawn } = require('child_process');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+const {PythonShell} = require('python-shell');
 const port = 8080;
 
 // const nh = rosnodejs.nh;
@@ -24,12 +24,9 @@ app.post('/api/arm', (req, res) => {
     }
 });
 
-const python = spawn('python', ['video_retriever.py'], {
-    stdio:[null, null, null, 'ipc']
-});
-python.on('message', (data) => {
-    console.log(data);
-    io.emit('image', data.toString());
+let pyshell = new PythonShell('video_retriever.py');
+pyshell.on('message', function (message) {
+    io.emit('image', message.toString());
 });
 
 server.listen(port, () => {

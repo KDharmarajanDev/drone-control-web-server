@@ -11,8 +11,7 @@ while cap.isOpened():
     if ret:
         retval, buffer = cv.imencode('.jpg', frame)
         text = base64.b64encode(buffer)
-        os.write(3, text)
-        time.sleep(3)
+        print(text.decode('utf-8'))
 
 cap.release()
 cv.destroyAllWindows()
