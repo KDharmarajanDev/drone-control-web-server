@@ -1,6 +1,7 @@
-.booth {
-    width: 400px;
-    background: #cccccc;
-    border: 10px solid #dddddd;
-    margin: 0 auto;
+#main-title {
+    text-align: center;
+}
+
+#background {
+    background-color: #035AFC;
 }

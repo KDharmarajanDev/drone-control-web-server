@@ -4,19 +4,18 @@
 <head>
   <meta charset="utf-8">
   <title>Drone Control Web Server</title>
-  <link rel="stylesheet" href="public/css/style.css">
+  <link rel="stylesheet" href="/public/css/style.css">
 </head>
-<body>
-    <p>Test</p>
-    <form action="api/arm/" method="POST">
-      <fieldset>
-        <input type="submit" name="arm_status" value="ARM"/>
-      </fieldset>
-    </form>
+<body id="background">
+  <div>
+    <p id="main-title">Drone Control Web Server</p>
+    <button id="arm-button">Arm</button>
+    <button id="arm-button">Fly Home</button>
     <div class="booth">
       <img id="image">
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.1/socket.io.min.js"></script>    
-    <script src="public/js/video.js"></script>
+    <script src="/public/js/video.js"></script>
+  </div>
 </body>
 </html>
