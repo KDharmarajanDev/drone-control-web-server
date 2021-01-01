@@ -17,11 +17,11 @@ app.get('/', (req, res) => {
     res.sendFile(process.cwd() + "/public/html/index.html");
 });
 
-app.post('/api/arm', (req, res) => {
-    if (req.body.arm_status == "ARM"){
-        // const client = nh.serviceClient('/mavros/cmd/arming', 'mavros_msgs/CommandBool');
-        // client.call({'value': true});
-    }
+io.on('connection', function(socket){
+    console.log('Client connected with socket ID: '+ socket.client.id);
+    socket.on('test', function(data){
+        console.log(data);
+    });
 });
 
 let pyshell = new PythonShell('video_retriever.py');
