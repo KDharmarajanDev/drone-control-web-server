@@ -1,5 +1,15 @@
 #main-title {
     text-align: center;
+    color: white;
+    font-family: 'Duru Sans', sans-serif;
+}
+
+.action-button {
+    text-align: center;
+    color: white;
+    background: #FF4F4F;
+    border: none;
+    border-radius: 25px;
 }
 
 #background {
