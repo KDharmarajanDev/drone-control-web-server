@@ -1,5 +1,5 @@
 const express = require('express');
-// const rosnodejs = require('rosnodejs');
+const rosnodejs = require('rosnodejs');
 const bodyParser = require('body-parser');
 const app = express();
 const server = require('http').Server(app);
@@ -7,7 +7,9 @@ const io = require('socket.io')(server);
 const {PythonShell} = require('python-shell');
 const port = 8080;
 
-// const nh = rosnodejs.nh;
+const nh = rosnodejs.nh;
+const StringMsg = rosnodejs.require('std_msgs').msg.String;
+const pub = nh.advertise('/chatter', StringMsg);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -22,11 +24,14 @@ io.on('connection', function(socket){
     socket.on('test', function(data){
         console.log(data);
     });
+    socket.on('arm', function(data) {
+        pub.publish({data: "ROS TEST"});
+    });
 });
 
 let pyshell = new PythonShell('video_retriever.py');
 pyshell.on('message', function (message) {
-    io.emit('image', message.toString());
+    io.emit('video', message.toString());
 });
 
 server.listen(port, () => {

@@ -4,6 +4,12 @@
     font-family: 'Duru Sans', sans-serif;
 }
 
+#video-feed {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .action-button {
     text-align: center;
     color: white;

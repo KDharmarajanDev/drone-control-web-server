@@ -1,10 +1,14 @@
 const socket = io();
-socket.on('image', (data) => {
-    const image = document.getElementById('image');
+socket.on('video', (data) => {
+    const image = document.getElementById('video-feed');
     image.src = `data:image/jpeg;base64,${data}`;
 });
 
 document.getElementById("test").addEventListener('click', () => {
     console.log('clicked!');
     socket.emit('test', 'test');
+});
+
+document.getElementById("arm-button").addEventListener('click', () => {
+    socket.emit('arm', true);
 });
