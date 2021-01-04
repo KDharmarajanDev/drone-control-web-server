@@ -6,7 +6,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const {PythonShell} = require('python-shell');
 const port = 8080;
-const pub;
+const pub = null;
 
 rosnodejs.initNode('my_node')
 .then((nh) => {
