@@ -6,7 +6,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const {PythonShell} = require('python-shell');
 const port = 8080;
-const pub = null;
+var pub = null;
 
 rosnodejs.initNode('my_node')
 .then((nh) => {
@@ -28,6 +28,7 @@ io.on('connection', function(socket){
         console.log(data);
     });
     socket.on('arm', function(data) {
+        console.log('Arm received');
         pub.publish({data: "ROS TEST"});
     });
 });
