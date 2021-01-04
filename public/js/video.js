@@ -10,5 +10,5 @@ document.getElementById("test").addEventListener('click', () => {
 });
 
 document.getElementById("arm-button").addEventListener('click', () => {
-    socket.emit('arm', true);
+    socket.emit('arm', 'true');
 });
