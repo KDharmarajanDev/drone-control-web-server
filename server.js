@@ -6,10 +6,13 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const {PythonShell} = require('python-shell');
 const port = 8080;
+const pub;
 
-const nh = rosnodejs.nh;
-const StringMsg = rosnodejs.require('std_msgs').msg.String;
-const pub = nh.advertise('/chatter', StringMsg);
+rosnodejs.initNode('my_node')
+.then((nh) => {
+    const StringMsg = rosnodejs.require('std_msgs').msg.String;
+    pub = nh.advertise('/chatter', StringMsg);    
+});
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
