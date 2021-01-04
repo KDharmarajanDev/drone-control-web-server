@@ -10,6 +10,11 @@
     background: #FF4F4F;
     border: none;
     border-radius: 25px;
+    font-size: 35px;
+    padding-right: 30px;
+    padding-left: 30px;
+    font-family: 'Trebuchet MS', sans-serif;
+    cursor: pointer;
 }
 
 #background {
