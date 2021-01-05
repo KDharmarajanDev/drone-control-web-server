@@ -6,12 +6,13 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const {PythonShell} = require('python-shell');
 const port = 8080;
-var pub = null;
 
-rosnodejs.initNode('my_node')
+// ROS Services, Publishers, and Subscribers
+var arm_service = null;
+
+rosnodejs.initNode('web_control_node')
 .then((nh) => {
-    const StringMsg = rosnodejs.require('std_msgs').msg.String;
-    pub = nh.advertise('/chatter', StringMsg);    
+    arm_service = nh.serviceClient('/mavros/cmd/arming', 'mavros_msgs/CommandBool');
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,8 +29,8 @@ io.on('connection', function(socket){
         console.log(data);
     });
     socket.on('arm', function(data) {
-        console.log('Arm received');
-        pub.publish({data: "ROS TEST"});
+        console.log('Arming drone!');
+        arm_service.call({value: true});
     });
 });
 
