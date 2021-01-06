@@ -12,3 +12,7 @@ document.getElementById("test").addEventListener('click', () => {
 document.getElementById("arm-button").addEventListener('click', () => {
     socket.emit('arm', 'true');
 });
+
+document.getElementById("fly-button").addEventListener('click', () =>{
+    socket.emit('fly-home', 'true');
+});

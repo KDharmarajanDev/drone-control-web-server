@@ -9,10 +9,12 @@ const port = 8080;
 
 // ROS Services, Publishers, and Subscribers
 var arm_service = null;
+var fly_home_service = null;
 
 rosnodejs.initNode('web_control_node')
 .then((nh) => {
     arm_service = nh.serviceClient('/mavros/cmd/arming', 'mavros_msgs/CommandBool');
+    fly_home_service = nh.serviceClient('/mavros/set_mode', 'mavros_msgs/SetMode');
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,6 +33,10 @@ io.on('connection', function(socket){
     socket.on('arm', function(data) {
         console.log('Arming drone!');
         arm_service.call({value: true});
+    });
+    socket.on('fly-home', function(data) {
+        console.log('Drone is now flying home!');
+        fly_home_service.call({'custom_mode': 'RTL'});
     });
 });
 
