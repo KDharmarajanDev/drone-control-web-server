@@ -2,17 +2,19 @@
   "name": "drone-control-web-server",
   "version": "1.0.0",
   "description": "A web server that opens up a portal to control the drone in many different ways.",
-  "main": "server.js",
+  "private": true,
   "dependencies": {
     "body-parser": "1.19.0",
     "express": "4.17.1",
     "mapbox-gl": "2.0.1",
     "python-shell": "2.0.2",
     "rosnodejs": "3.0.2",
-    "socket.io": "3.0.3"
+    "socket.io": "3.0.3",
+    "three": "0.122.0"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -23,5 +25,9 @@
   "bugs": {
     "url": "https://github.com/KDharmarajanDev/drone-control-web-server/issues"
   },
-  "homepage": "https://github.com/KDharmarajanDev/drone-control-web-server#readme"
+  "homepage": "https://github.com/KDharmarajanDev/drone-control-web-server#readme",
+  "devDependencies": {
+    "webpack": "^5.11.1",
+    "webpack-cli": "^4.3.1"
+  }
 }
