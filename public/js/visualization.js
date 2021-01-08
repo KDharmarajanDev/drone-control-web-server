@@ -1,3 +1,4 @@
+import getDroneLocation from '/public/js/video.js';
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2RoYXJtYXJhamFuIiwiYSI6ImNraXIyMXg0bDFtMnAyemxpdG4wOHloZ2cifQ.4eWxFDwc1F0zscIOBBXnRw';
