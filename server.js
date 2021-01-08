@@ -1,5 +1,5 @@
 const express = require('express');
-const rosnodejs = require('rosnodejs');
+// const rosnodejs = require('rosnodejs');
 const bodyParser = require('body-parser');
 const app = express();
 const server = require('http').Server(app);
@@ -11,11 +11,11 @@ const port = 8080;
 var arm_service = null;
 var fly_home_service = null;
 
-rosnodejs.initNode('web_control_node')
-.then((nh) => {
-    arm_service = nh.serviceClient('/mavros/cmd/arming', 'mavros_msgs/CommandBool');
-    fly_home_service = nh.serviceClient('/mavros/set_mode', 'mavros_msgs/SetMode');
-});
+// rosnodejs.initNode('web_control_node')
+// .then((nh) => {
+//     arm_service = nh.serviceClient('/mavros/cmd/arming', 'mavros_msgs/CommandBool');
+//     fly_home_service = nh.serviceClient('/mavros/set_mode', 'mavros_msgs/SetMode');
+// });
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -40,10 +40,10 @@ io.on('connection', function(socket){
     });
 });
 
-let pyshell = new PythonShell('video_retriever.py');
-pyshell.on('message', function (message) {
-    io.emit('video', message.toString());
-});
+// let pyshell = new PythonShell('video_retriever.py');
+// pyshell.on('message', function (message) {
+//     io.emit('video', message.toString());
+// });
 
 server.listen(port, () => {
     console.log(`Listening on port ${port}`);

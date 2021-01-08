@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="/public/css/style.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Duru+Sans&family=Lato:wght@300&display=swap" rel="stylesheet">
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body id="background">
   <div>
@@ -16,8 +17,11 @@
     <div class="booth">
       <img id="video-feed">
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.1/socket.io.min.js"></script>    
+    <div id="map" style='width: 400px; height: 300px;'>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.1/socket.io.min.js"></script> 
     <script src="/public/js/video.js"></script>
+    <script src="/public/js/vis.js" type="module"></script>
   </div>
 </body>
 </html>

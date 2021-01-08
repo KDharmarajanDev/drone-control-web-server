@@ -4,11 +4,12 @@
   "description": "A web server that opens up a portal to control the drone in many different ways.",
   "main": "server.js",
   "dependencies": {
-    "express": "4.17.1",
-    "rosnodejs": "3.0.2",
     "body-parser": "1.19.0",
-    "socket.io": "3.0.3",
-    "python-shell": "2.0.2"
+    "express": "4.17.1",
+    "mapbox-gl": "2.0.1",
+    "python-shell": "2.0.2",
+    "rosnodejs": "3.0.2",
+    "socket.io": "3.0.3"
   },
   "scripts": {
     "start": "node server.js"
