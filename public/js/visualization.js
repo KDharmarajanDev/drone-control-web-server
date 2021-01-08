@@ -1,4 +1,4 @@
-import getDroneLocation from '/public/js/video.js';
+import socket from '/public/js/video.js';
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2RoYXJtYXJhamFuIiwiYSI6ImNraXIyMXg0bDFtMnAyemxpdG4wOHloZ2cifQ.4eWxFDwc1F0zscIOBBXnRw';
@@ -9,6 +9,8 @@ var map = new mapboxgl.Map({
     pitch: 45,
     bearing: -17.6
 });
+
+var default_location = {'latitude': 34.052235, 'longitude': -118.243683, 'altitude': 0};
 
 map.on('load', function () {
     // Insert the layer beneath any symbol layer.
@@ -21,7 +23,6 @@ map.on('load', function () {
         break;
         }
     }
-     
     map.addLayer(
         {
             'id': '3d-buildings',
@@ -59,3 +60,29 @@ map.on('load', function () {
             labelLayerId
         );
     });
+
+function convertToTransform(location) {
+    var modelOrigin = [location.latitude, location.longitude];
+    var modelAltitude = location.altitude;
+    var modelRotate = [Math.PI / 2, 0, 0];
+ 
+    var modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(
+        modelOrigin,
+        modelAltitude
+    );
+ 
+    // transformation parameters to position, rotate and scale the 3D model onto the map
+    var modelTransform = {
+        translateX: modelAsMercatorCoordinate.x,
+        translateY: modelAsMercatorCoordinate.y,
+        translateZ: modelAsMercatorCoordinate.z,
+        rotateX: modelRotate[0],
+        rotateY: modelRotate[1],
+        rotateZ: modelRotate[2],
+        /* Since our 3D model is in real world meters, a scale transform needs to be
+        * applied since the CustomLayerInterface expects units in MercatorCoordinates.
+        */
+        scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits()
+    };
+    return modelTransform;
+}
