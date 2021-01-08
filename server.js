@@ -12,14 +12,14 @@ var arm_service = null;
 var fly_home_service = null;
 var drone_location_sub = null;
 
-rosnodejs.initNode('web_control_node')
-.then((nh) => {
-    arm_service = nh.serviceClient('/mavros/cmd/arming', 'mavros_msgs/CommandBool');
-    fly_home_service = nh.serviceClient('/mavros/set_mode', 'mavros_msgs/SetMode');
-    drone_location_sub = nh.subscribe('/mavros/global_position/global', 'sensor_msgs/NavSatFix', (msg) => {
-        io.emit("gps", msg);
-    });
-});
+// rosnodejs.initNode('web_control_node')
+// .then((nh) => {
+//     arm_service = nh.serviceClient('/mavros/cmd/arming', 'mavros_msgs/CommandBool');
+//     fly_home_service = nh.serviceClient('/mavros/set_mode', 'mavros_msgs/SetMode');
+//     drone_location_sub = nh.subscribe('/mavros/global_position/global', 'sensor_msgs/NavSatFix', (msg) => {
+//         io.emit("gps", msg);
+//     });
+// });
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
