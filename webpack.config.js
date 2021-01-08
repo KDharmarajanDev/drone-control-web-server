@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: ['/devel/js/video.js', '/devel/js/visualization.js', '/devel/js/document-events.js'],
     output: {
         filename: 'main.js',
