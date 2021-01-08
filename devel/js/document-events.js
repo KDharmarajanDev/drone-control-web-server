@@ -1,4 +1,4 @@
-import socket from '/devel/js/video.js'
+import {socket} from '/devel/js/video.js';
 
 document.getElementById("test").addEventListener('click', () => {
     console.log('clicked!');

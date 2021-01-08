@@ -1,6 +1,10 @@
-import socket from '/devel/js/video.js';
-import * as THREE from 'three';
+import {socket} from '/devel/js/video.js';
+import * as THREE from 'three/build/three.module.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
+
+const default_location = {'latitude': 34.052235, 'longitude': -118.243683, 'altitude': 0};
+var modelTransform = convertToTransform(default_location);
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2RoYXJtYXJhamFuIiwiYSI6ImNraXIyMXg0bDFtMnAyemxpdG4wOHloZ2cifQ.4eWxFDwc1F0zscIOBBXnRw';
 var map = new mapboxgl.Map({
@@ -8,23 +12,14 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/mapbox/streets-v11',
     zoom: 15.5,
     pitch: 45,
-    bearing: -17.6
+    bearing: -17.6,
+    center: [default_location['longitude'], default_location['latitude']],
+    antialias: true
 });
 
-var default_location = {'latitude': 34.052235, 'longitude': -118.243683, 'altitude': 0};
-var modelTransform = convertToTransform(default_location);
-
 map.on('load', function () {
-    // Insert the layer beneath any symbol layer.
-    var layers = map.getStyle().layers;
-     
-    var labelLayerId;
-    for (var i = 0; i < layers.length; i++) {
-        if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-            labelLayerId = layers[i].id;
-        break;
-        }
-    }
+    // Insert the layer beneath any symbol layer.    
+    var labelLayerId = getFirstSymbolLayer(map);
     map.addLayer(
         {
             'id': '3d-buildings',
@@ -61,92 +56,85 @@ map.on('load', function () {
             },
             labelLayerId
         );
+        var droneLayer = {
+            id: 'drone-model',
+            type: 'custom',
+            renderingMode: '3d',
+            onAdd: function (map, gl) {
+                this.camera = new THREE.Camera();
+                this.scene = new THREE.Scene();
+    
+                // create two three.js lights to illuminate the model
+                var directionalLight = new THREE.DirectionalLight(0xffffff);
+                directionalLight.position.set(0, -70, 100).normalize();
+                this.scene.add(directionalLight);
+    
+                var directionalLight2 = new THREE.DirectionalLight(0xffffff);
+                directionalLight2.position.set(0, 70, 100).normalize();
+                this.scene.add(directionalLight2);
+    
+                // use the three.js GLTF loader to add the 3D model to the three.js scene
+                var loader = new GLTFLoader();
+                loader.load(
+                    'https://docs.mapbox.com/mapbox-gl-js/assets/34M_17/34M_17.gltf',
+                    function (gltf) {
+                        this.scene.add(gltf.scene);
+                    }.bind(this)
+                );
+                this.map = map;
+    
+                // use the Mapbox GL JS map canvas for three.js
+                this.renderer = new THREE.WebGLRenderer({
+                    canvas: map.getCanvas(),
+                    context: gl,
+                    antialias: true
+                });
+    
+                this.renderer.autoClear = false;
+            },
+            render: function (gl, matrix) {
+                var rotationX = new THREE.Matrix4().makeRotationAxis(
+                    new THREE.Vector3(1, 0, 0),
+                    modelTransform.rotateX
+                );
+                var rotationY = new THREE.Matrix4().makeRotationAxis(
+                    new THREE.Vector3(0, 1, 0),
+                    modelTransform.rotateY
+                );
+                var rotationZ = new THREE.Matrix4().makeRotationAxis(
+                    new THREE.Vector3(0, 0, 1),
+                    modelTransform.rotateZ
+                );
+    
+                var m = new THREE.Matrix4().fromArray(matrix);
+                var l = new THREE.Matrix4()
+                    .makeTranslation(
+                        modelTransform.translateX,
+                        modelTransform.translateY,
+                        modelTransform.translateZ
+                    )
+                    .scale(
+                        new THREE.Vector3(
+                            modelTransform.scale,
+                            -modelTransform.scale,
+                            modelTransform.scale
+                        )
+                    )
+                    .multiply(rotationX)
+                    .multiply(rotationY)
+                    .multiply(rotationZ);
+    
+                this.camera.projectionMatrix = m.multiply(l);
+                this.renderer.state.reset();
+                this.renderer.render(this.scene, this.camera);
+                this.map.triggerRepaint();
+            }
+        };
+        map.addLayer(droneLayer, labelLayerId);
     });
 
-map.on('style.load', () => {
-    var droneLayer = {
-        id: 'drone-model',
-        type: 'custom',
-        renderingMode: '3d',
-        onAdd: function (map, gl) {
-            this.camera = new THREE.Camera();
-            this.scene = new THREE.Scene();
-
-            // create two three.js lights to illuminate the model
-            var directionalLight = new THREE.DirectionalLight(0xffffff);
-            directionalLight.position.set(0, -70, 100).normalize();
-            this.scene.add(directionalLight);
-
-            var directionalLight2 = new THREE.DirectionalLight(0xffffff);
-            directionalLight2.position.set(0, 70, 100).normalize();
-            this.scene.add(directionalLight2);
-
-            // use the three.js GLTF loader to add the 3D model to the three.js scene
-            var loader = new THREE.GLTFLoader();
-            loader.load(
-                'https://docs.mapbox.com/mapbox-gl-js/assets/34M_17/34M_17.gltf',
-                function (gltf) {
-                    this.scene.add(gltf.scene);
-                }.bind(this)
-            );
-            this.map = map;
-
-            // use the Mapbox GL JS map canvas for three.js
-            this.renderer = new THREE.WebGLRenderer({
-                canvas: map.getCanvas(),
-                context: gl,
-                antialias: true
-            });
-
-            this.renderer.autoClear = false;
-        },
-        render: function (gl, matrix) {
-            var rotationX = new THREE.Matrix4().makeRotationAxis(
-                new THREE.Vector3(1, 0, 0),
-                modelTransform.rotateX
-            );
-            var rotationY = new THREE.Matrix4().makeRotationAxis(
-                new THREE.Vector3(0, 1, 0),
-                modelTransform.rotateY
-            );
-            var rotationZ = new THREE.Matrix4().makeRotationAxis(
-                new THREE.Vector3(0, 0, 1),
-                modelTransform.rotateZ
-            );
-
-            var m = new THREE.Matrix4().fromArray(matrix);
-            var l = new THREE.Matrix4()
-                .makeTranslation(
-                    modelTransform.translateX,
-                    modelTransform.translateY,
-                    modelTransform.translateZ
-                )
-                .scale(
-                    new THREE.Vector3(
-                        modelTransform.scale,
-                        -modelTransform.scale,
-                        modelTransform.scale
-                    )
-                )
-                .multiply(rotationX)
-                .multiply(rotationY)
-                .multiply(rotationZ);
-
-            this.camera.projectionMatrix = m.multiply(l);
-            this.renderer.state.reset();
-            this.renderer.render(this.scene, this.camera);
-            this.map.triggerRepaint();
-        }
-    };
-    map.addLayer(droneLayer, 'Drone');
-});
-
-socket.on('gps', (data) => {
-    modelTransform = convertToTransform(data);
-});
-
 function convertToTransform(location) {
-    var modelOrigin = [location.latitude, location.longitude];
+    var modelOrigin = [location.longitude, location.latitude];
     var modelAltitude = location.altitude;
     var modelRotate = [Math.PI / 2, 0, 0];
  
@@ -170,3 +158,19 @@ function convertToTransform(location) {
     };
     return modelTransform;
 }
+
+function getFirstSymbolLayer(map){
+    var layers = map.getStyle().layers;
+    var labelLayerId;
+    for (var i = 0; i < layers.length; i++) {
+        if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+            labelLayerId = layers[i].id;
+        break;
+        }
+    }
+    return labelLayerId;
+}
+
+socket.on('gps', (data) => {
+    modelTransform = convertToTransform(data);
+});
