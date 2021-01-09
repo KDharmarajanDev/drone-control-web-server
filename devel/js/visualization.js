@@ -9,7 +9,7 @@ var current_location = default_location;
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2RoYXJtYXJhamFuIiwiYSI6ImNraXIyMXg0bDFtMnAyemxpdG4wOHloZ2cifQ.4eWxFDwc1F0zscIOBBXnRw';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
+    style: 'mapbox://styles/mapbox-map-design/ckhqrf2tz0dt119ny6azh975y',
     zoom: 15.5,
     pitch: 45,
     bearing: -17.6,
@@ -87,6 +87,14 @@ map.on('load', function () {
                 tb.update();
             }
         });
+        map.addSource('mapbox-dem', {
+            'type': 'raster-dem',
+            'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+            'tileSize': 512,
+            'maxzoom': 14
+            });
+        // add the DEM source as a terrain layer with exaggerated height
+        map.setTerrain({'source': 'mapbox-dem'});
     });
 map.dragRotate.enable();
 map.dragPan.enable();
