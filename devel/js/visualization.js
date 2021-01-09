@@ -3,7 +3,7 @@ import 'threebox-plugin/dist/threebox';
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 var drone_object = null;
 
-const default_location = {'latitude': 34.052235, 'longitude': -118.243683, 'altitude': 20};
+const default_location = {'latitude': 34.052235, 'longitude': -118.243683, 'altitude': 0};
 var current_location = default_location;
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2RoYXJtYXJhamFuIiwiYSI6ImNraXIyMXg0bDFtMnAyemxpdG4wOHloZ2cifQ.4eWxFDwc1F0zscIOBBXnRw';
@@ -70,7 +70,7 @@ map.on('load', function () {
                 );
                 var options = {
                     type: 'gltf',
-                    obj: 'public/assets/Hummingbird.glb',
+                    obj: 'public/assets/drone.gltf',
                     scale: 0.1,
                     units: 'meters',
                     anchor: "bottom",
@@ -119,7 +119,48 @@ function convert_location_to_lnlat(location) {
     return [location['longitude'], location['latitude'], location['altitude']];
 }
 
+class ReturnViewToDrone {
+    constructor(drone_object, zoom_level, speed) {
+        this.drone_object = drone_object;
+        this.zoom_level = zoom_level;
+        this.speed = speed;
+    }
+
+    onAdd(map){
+        this.btn = document.createElement('button');
+        this.btn.className = 'drone-button';
+        this.btn.onclick = (event) => {
+            var center_location = convert_location_to_lnlat(current_location);
+            center_location[2] += 30;
+            map.flyTo({
+                center: center_location,
+                zoom: this.zoom_level,
+                speed: this.speed,
+                curve: 1,
+                bearing: map.getBearing(),
+                easing: (t) => {
+                    return t;
+                },
+                essential: true
+            });
+        };
+        this.container = document.createElement('div');
+        this.container.className = "mapboxgl-ctrl-group mapboxgl-ctrl";
+        this.container.appendChild(this.btn);
+
+        return this.container;
+    }
+
+    onRemove() {
+        this.container.parentNode.removeChild(this.container);
+        this.map = undefined;
+    }
+}
+
+map.addControl(new ReturnViewToDrone(drone_object, 19.5, 1));
+
 socket.on('gps', (data) => {
     current_location = data;
     setDroneLocation(convert_location_to_lnlat(current_location));
 });
+ 
