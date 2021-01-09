@@ -1,10 +1,10 @@
 import {socket} from '/devel/js/video.js';
-import * as THREE from 'three/build/three.module.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import 'threebox-plugin/dist/threebox';
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
+var drone_object = null;
 
-const default_location = {'latitude': 34.052235, 'longitude': -118.243683, 'altitude': 0};
-var modelTransform = convertToTransform(default_location);
+const default_location = {'latitude': 34.052235, 'longitude': -118.243683, 'altitude': 20};
+var current_location = default_location;
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2RoYXJtYXJhamFuIiwiYSI6ImNraXIyMXg0bDFtMnAyemxpdG4wOHloZ2cifQ.4eWxFDwc1F0zscIOBBXnRw';
 var map = new mapboxgl.Map({
@@ -56,108 +56,40 @@ map.on('load', function () {
             },
             labelLayerId
         );
-        var droneLayer = {
-            id: 'drone-model',
+        map.addLayer({
+            id: 'drone',
             type: 'custom',
             renderingMode: '3d',
-            onAdd: function (map, gl) {
-                this.camera = new THREE.Camera();
-                this.scene = new THREE.Scene();
-    
-                // create two three.js lights to illuminate the model
-                var directionalLight = new THREE.DirectionalLight(0xffffff);
-                directionalLight.position.set(0, -70, 100).normalize();
-                this.scene.add(directionalLight);
-    
-                var directionalLight2 = new THREE.DirectionalLight(0xffffff);
-                directionalLight2.position.set(0, 70, 100).normalize();
-                this.scene.add(directionalLight2);
-    
-                // use the three.js GLTF loader to add the 3D model to the three.js scene
-                var loader = new GLTFLoader();
-                loader.load(
-                    'https://docs.mapbox.com/mapbox-gl-js/assets/34M_17/34M_17.gltf',
-                    function (gltf) {
-                        this.scene.add(gltf.scene);
-                    }.bind(this)
+            onAdd: function (map, mbxContext) {
+                window.tb = new Threebox(
+                    map,
+                    mbxContext,
+                    {
+                        defaultLights: true
+                    }
                 );
-                this.map = map;
-    
-                // use the Mapbox GL JS map canvas for three.js
-                this.renderer = new THREE.WebGLRenderer({
-                    canvas: map.getCanvas(),
-                    context: gl,
-                    antialias: true
+                var options = {
+                    type: 'gltf',
+                    obj: 'public/assets/Hummingbird.glb',
+                    scale: 0.1,
+                    units: 'meters',
+                    anchor: "bottom",
+                    rotation: { x: 90, y: 0, z: 0 }, //rotation to postiion the truck and heading properly
+                }
+                console.log(tb);
+                tb.loadObj(options, function(model){
+                    console.log('activated');
+                    drone_object = model.setCoords(convert_location_to_lnlat(default_location));
+                    tb.add(drone_object);
                 });
-    
-                this.renderer.autoClear = false;
             },
             render: function (gl, matrix) {
-                var rotationX = new THREE.Matrix4().makeRotationAxis(
-                    new THREE.Vector3(1, 0, 0),
-                    modelTransform.rotateX
-                );
-                var rotationY = new THREE.Matrix4().makeRotationAxis(
-                    new THREE.Vector3(0, 1, 0),
-                    modelTransform.rotateY
-                );
-                var rotationZ = new THREE.Matrix4().makeRotationAxis(
-                    new THREE.Vector3(0, 0, 1),
-                    modelTransform.rotateZ
-                );
-    
-                var m = new THREE.Matrix4().fromArray(matrix);
-                var l = new THREE.Matrix4()
-                    .makeTranslation(
-                        modelTransform.translateX,
-                        modelTransform.translateY,
-                        modelTransform.translateZ
-                    )
-                    .scale(
-                        new THREE.Vector3(
-                            modelTransform.scale,
-                            -modelTransform.scale,
-                            modelTransform.scale
-                        )
-                    )
-                    .multiply(rotationX)
-                    .multiply(rotationY)
-                    .multiply(rotationZ);
-    
-                this.camera.projectionMatrix = m.multiply(l);
-                this.renderer.state.reset();
-                this.renderer.render(this.scene, this.camera);
-                this.map.triggerRepaint();
+                tb.update();
             }
-        };
-        map.addLayer(droneLayer, labelLayerId);
+        });
     });
-
-function convertToTransform(location) {
-    var modelOrigin = [location.longitude, location.latitude];
-    var modelAltitude = location.altitude;
-    var modelRotate = [Math.PI / 2, 0, 0];
- 
-    var modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(
-        modelOrigin,
-        modelAltitude
-    );
- 
-    // transformation parameters to position, rotate and scale the 3D model onto the map
-    var modelTransform = {
-        translateX: modelAsMercatorCoordinate.x,
-        translateY: modelAsMercatorCoordinate.y,
-        translateZ: modelAsMercatorCoordinate.z,
-        rotateX: modelRotate[0],
-        rotateY: modelRotate[1],
-        rotateZ: modelRotate[2],
-        /* Since our 3D model is in real world meters, a scale transform needs to be
-        * applied since the CustomLayerInterface expects units in MercatorCoordinates.
-        */
-        scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits()
-    };
-    return modelTransform;
-}
+map.dragRotate.enable();
+map.dragPan.enable();
 
 function getFirstSymbolLayer(map){
     var layers = map.getStyle().layers;
@@ -171,6 +103,15 @@ function getFirstSymbolLayer(map){
     return labelLayerId;
 }
 
+function setDroneLocation(lnlat){
+    drone_object.setCoords(lnlat);
+}
+
+function convert_location_to_lnlat(location) {
+    return [location['longitude'], location['latitude'], location['altitude']];
+}
+
 socket.on('gps', (data) => {
-    modelTransform = convertToTransform(data);
+    current_location = data;
+    setDroneLocation(current_location);
 });

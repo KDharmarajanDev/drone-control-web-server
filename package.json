@@ -10,8 +10,9 @@
     "python-shell": "2.0.2",
     "rosnodejs": "3.0.2",
     "socket.io": "3.0.3",
+    "socket.io-client": "3.0.4",
     "three": "0.124.0",
-    "socket.io-client": "3.0.4"
+    "threebox-plugin": "^2.1.6"
   },
   "scripts": {
     "start": "node server.js",
