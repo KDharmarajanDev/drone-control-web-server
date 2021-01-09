@@ -113,5 +113,5 @@ function convert_location_to_lnlat(location) {
 
 socket.on('gps', (data) => {
     current_location = data;
-    setDroneLocation(current_location);
+    setDroneLocation(convert_location_to_lnlat(current_location));
 });
