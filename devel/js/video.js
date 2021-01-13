@@ -1,7 +1,7 @@
 const io = require('socket.io-client');
 var socket = io();
 
-socket.on('connection', () =>{
+socket.on('connect', () =>{
     document.getElementById('connection-status').innerHTML = "Connected";
     document.getElementById('connection-status').style.color = "green";
     console.log('Connected!');
