@@ -14,11 +14,13 @@ if (socket.connected) {
 socket.on('connection', () =>{
     document.getElementById('connection-status').innerHTML = "Connected";
     document.getElementById('connection-status').style.color = "green";
+    console.log('Connected!');
 });
 
 socket.on('disconnection', () =>{
     document.getElementById('connection-status').innerHTML = "Disconnected";
     document.getElementById('connection-status').style.color = "red";
+    console.log('Disconnected!');
 });
 
 
