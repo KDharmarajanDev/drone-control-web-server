@@ -5,6 +5,7 @@
 }
 
 #map {
+    margin-top: 30px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -59,4 +60,16 @@
 body {
     padding: 0;
     margin: 0;
+}
+
+#connection-status {
+    color: red;
+    border: none;
+    border-radius: 25px;
+    font-size: 35px;
+    padding-right: 30px;
+    padding-left: 30px;
+    font-family: 'Trebuchet MS', sans-serif;
+    cursor: pointer;
+    background: white;
 }

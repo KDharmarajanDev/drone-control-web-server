@@ -5,4 +5,16 @@ socket.on('video', (data) => {
     image.src = `data:image/jpeg;base64,${data}`;
 });
 
+// Handles connections
+socket.on('connection', () =>{
+    document.getElementById('connection-status').innerHTML = "Connected";
+    document.getElementById('connection-status').style.color = "green";
+});
+
+socket.on('disconnection', () =>{
+    document.getElementById('connection-status').innerHTML = "Disconnected";
+    document.getElementById('connection-status').style.color = "red";
+});
+
+
 export {socket}
