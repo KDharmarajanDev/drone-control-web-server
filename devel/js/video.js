@@ -6,6 +6,11 @@ socket.on('video', (data) => {
 });
 
 // Handles connections
+if (socket.connected) {
+    document.getElementById('connection-status').innerHTML = "Connected";
+    document.getElementById('connection-status').style.color = "green";
+}
+
 socket.on('connection', () =>{
     document.getElementById('connection-status').innerHTML = "Connected";
     document.getElementById('connection-status').style.color = "green";
