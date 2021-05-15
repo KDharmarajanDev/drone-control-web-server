@@ -10,9 +10,6 @@
   <script src="plotly-latest.min.js"></script>
 </head>
 <body id="background">
-  <div id="sidebar">
-
-  </div>
   <div id="main-content">
     <h1 id="main-title">Drone Control Web Server</h1>
     <div>
@@ -27,12 +24,14 @@
     </div>
     <div id="map">
     </div>
-    <div id="data">
-      <button id="start-plotting-button">Start Plotting Data</button>
+    <h2 id="data-plotting-title">Data Plotting</h2>
+    <div id="data" class="dashboard-section">
+      <input type="text" class="dashboard-section-title" size="20" placeholder="Data Plot Title">
       <div id="topic-data-container">
         <label for="data-topic-input" class="input-box-labels">ROS Topic of Data:</label>
-        <input type="text" id="data-topic-input" size="10">
-      </div>>
+        <input type="text" id="data-topic-input" size="13">
+      </div>
+      <button id="start-plotting-button">Start Plotting Data</button>
     </div>
     <script type="module" src="/public/js/main.js"></script>
   </div>

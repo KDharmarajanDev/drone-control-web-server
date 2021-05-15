@@ -22,9 +22,9 @@
 .action-button {
     text-align: center;
     color: white;
-    background: #D91414;
+    background: #716AE9;
     border: none;
-    border-radius: 25px;
+    border-radius: 10px;
     font-size: 35px;
     padding-right: 30px;
     padding-left: 30px;
@@ -33,7 +33,7 @@
 }
 
 #background {
-    background-color: #1E282E;
+    background-color: #171D2F;
 }
 
 .drone-button {
@@ -46,7 +46,7 @@
 #sidebar {
     margin: 0;
     padding: 0;
-    width: 200px;
+    width: 50px;
     background-color: #f1f1f1;
     position: fixed;
     height: 100%;
@@ -77,25 +77,64 @@ body {
 #start-plotting-button {
     text-align: center;
     color: white;
-    background: #D91414;
+    background: #716AE9;
     border: none;
     border-radius: 10px;
     font-size: 20px;
     padding-right: 30px;
     padding-left: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-family: 'Trebuchet MS', sans-serif;
     cursor: pointer;
 }
 
 #topic-data-container {
     width: 50%;
-    text-align: center;
+    margin-top: 10px;
 }
 
 #data-topic-input {
     color: white;
+    background: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid white;
+    font-family: 'Trebuchet MS', sans-serif;
+    width: 30%;
 }
 
 .input-box-labels { 
     color: white;
+    font-family: 'Trebuchet MS', sans-serif;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.dashboard-section {
+    background-color: #2A2F43;
+    margin: 1% 3% 3% 3%;
+    padding: 10px 10px 10px 10px;
+    border-radius: 5px;
+}
+
+#data-plotting-title {
+    text-align: center;
+    color: white;
+    font-family: 'Duru Sans', sans-serif;
+}
+
+.dashboard-section-title {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 30px;
+    font-family: 'Duru Sans', sans-serif;
+    text-align: center;
+    outline: none;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
 }
