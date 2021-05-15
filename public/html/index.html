@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Duru+Sans&family=Lato:wght@300&display=swap" rel="stylesheet">
   <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css' rel='stylesheet' />
+  <script src="plotly-latest.min.js"></script>
 </head>
 <body id="background">
   <div id="sidebar">
@@ -25,6 +26,13 @@
       <img id="video-feed">
     </div>
     <div id="map">
+    </div>
+    <div id="data">
+      <button id="start-plotting-button">Start Plotting Data</button>
+      <div id="topic-data-container">
+        <label for="data-topic-input" class="input-box-labels">ROS Topic of Data:</label>
+        <input type="text" id="data-topic-input" size="10">
+      </div>>
     </div>
     <script type="module" src="/public/js/main.js"></script>
   </div>

@@ -22,7 +22,7 @@
 .action-button {
     text-align: center;
     color: white;
-    background: #FF4F4F;
+    background: #D91414;
     border: none;
     border-radius: 25px;
     font-size: 35px;
@@ -33,7 +33,7 @@
 }
 
 #background {
-    background-color: #000080;
+    background-color: #1E282E;
 }
 
 .drone-button {
@@ -72,4 +72,30 @@ body {
     font-family: 'Trebuchet MS', sans-serif;
     cursor: pointer;
     background: white;
+}
+
+#start-plotting-button {
+    text-align: center;
+    color: white;
+    background: #D91414;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    padding-right: 30px;
+    padding-left: 30px;
+    font-family: 'Trebuchet MS', sans-serif;
+    cursor: pointer;
+}
+
+#topic-data-container {
+    width: 50%;
+    text-align: center;
+}
+
+#data-topic-input {
+    color: white;
+}
+
+.input-box-labels { 
+    color: white;
 }
