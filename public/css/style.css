@@ -91,7 +91,7 @@ body {
     cursor: pointer;
 }
 
-#topic-data-container {
+.topic-data-container {
     width: 50%;
     margin-top: 10px;
 }
@@ -137,4 +137,10 @@ body {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.data-plots {
+    width: 70%;
+    height: 300px;
+    margin: auto;
 }

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Duru+Sans&family=Lato:wght@300&display=swap" rel="stylesheet">
   <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css' rel='stylesheet' />
-  <script src="plotly-latest.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body id="background">
   <div id="main-content">
@@ -27,13 +27,20 @@
     <h2 id="data-plotting-title">Data Plotting</h2>
     <div id="data" class="dashboard-section">
       <input type="text" class="dashboard-section-title" size="20" placeholder="Data Plot Title">
-      <div id="topic-data-container">
+      <div class="topic-data-container">
         <label for="data-topic-input" class="input-box-labels">ROS Topic of Data:</label>
         <input type="text" id="data-topic-input" size="13">
       </div>
+      <div class="topic-data-container">
+        <label for="data-topic-input" class="input-box-labels">Data Being Plotted:</label>
+        <input type="text" size="13">
+      </div>
       <button id="start-plotting-button">Start Plotting Data</button>
+      <div id="plot" class="data-plots"></div>
     </div>
-    <script type="module" src="/public/js/main.js"></script>
+    <script type="module" src="/public/js/main.js"></script> 
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>  
   </div>
 </body>
 </html>
