@@ -1,4 +1,4 @@
-class PlotContainerTile {
+class PlotContainerTile extends {
     constructor() {
         // Creates the overall parent container 
         this.parentDiv = document.createElement('div');
