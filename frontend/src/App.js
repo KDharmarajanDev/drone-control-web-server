@@ -1,5 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
+import DataVizCard from './data-visualizer-card';
+import { Grid } from '@material-ui/core';
 
 function App() {
   return (
@@ -20,19 +21,10 @@ function App() {
       </div>
       <h2 id="data-plotting-title">Data Plotting</h2>
       <div id="data" class="dashboard-section">
-        <input type="text" class="dashboard-section-title" size="20" placeholder="Data Plot Title"/>
-        <div class="topic-data-container">
-          <label for="data-topic-input" class="input-box-labels">ROS Topic of Data:</label>
-          <input type="text" id="data-topic-input" size="13"/>
-        </div>
-        <div class="topic-data-container">
-          <label for="data-topic-input" class="input-box-labels">Data Being Plotted:</label>
-          <input type="text" size="13"/>
-        </div>
-        <button id="start-plotting-button">Start Plotting Data</button>
-        <div id="plot" class="data-plots"></div>
+        <Grid container >
+          <DataVizCard name="Test"/>
+        </Grid>
       </div>
-      <script type="module" src="/public/js/main.js"></script> 
     </div>
   </div>
   );
