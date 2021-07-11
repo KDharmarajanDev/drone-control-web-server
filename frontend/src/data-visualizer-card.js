@@ -13,8 +13,8 @@ const useStyles = makeStyles({
 export default function DataVizCard(props) {
     const classes = useStyles();
 
-    return (<Card className={classes.root} key={props.name}>
-                <CardHeader title={props.name} className={classes.title}/>
+    return (<Card className={classes.root} key={props.dataBox.name}>
+                <CardHeader title={props.dataBox.name} className={classes.title}/>
 
             </Card>
            );
