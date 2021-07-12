@@ -36,7 +36,7 @@ export default function DataVizManager(props) {
                 <Grid container>
                     {
                         dataBoxes.map(dataBox => (              
-                            <Grid xs={12} md={6} item justify="flex-start">
+                            <Grid xs={12} md={6} item justify="center">
                                 <DataVizCard dataBox={dataBox}/>
                             </Grid>))
                     }
