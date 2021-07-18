@@ -32,8 +32,10 @@
   cursor: pointer;
 }
 
-#background {
-  background-color: #171D2F;
+.background {
+  background-color: #0e0b16;
+  align-items: center;
+  justify-content: center;
 }
 
 .drone-button {

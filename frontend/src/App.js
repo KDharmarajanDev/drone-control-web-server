@@ -3,12 +3,9 @@ import DataVizManager from './data-visualizer-manager';
 
 function App() {
   return (
-  <div id="background">
+  <div class="background">
     <div id="main-content">
       <h1 id="main-title">Drone Control Web Server</h1>
-      <div>
-        <p id="connection-status">Disconnected</p>
-      </div>
       <div class="booth">
         <img id="video-feed"/>
       </div>
